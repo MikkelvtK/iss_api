@@ -26,6 +26,7 @@ defmodule IssApi.MixProject do
       {:jason, "~> 1.4"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:stream_data, "~> 0.6", only: :test},
+      {:mox, "~> 1.0", only: :test},
     ]
   end
 end

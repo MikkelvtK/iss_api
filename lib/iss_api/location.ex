@@ -24,5 +24,20 @@ defmodule IssApi.Location do
     }
   end
 
-  def new(_timestamp, _position), do: {:error, "invalid arguments"}
+  def new(timestamp, position) do
+    {
+      :error,
+      """
+      invalid arguments.
+
+      expected: 
+        timestamp :: non_neg_integer()
+        position :: {float(), float()}
+
+      got:
+        1 # #{timestamp}
+        2 # #{position}
+      """
+    }
+  end
 end
