@@ -7,14 +7,12 @@ defmodule IssApi.Client do
     |> handle_response
   end
 
-  defp handle_response({:ok, res}) do
-    body = Map.get(res, :body)
-    case Map.get(res, :status_code) do
-      200 -> 
-        body |> Jason.decode
-      _ -> 
-        {:error, body}
-    end 
+  defp handle_response({:ok, %{status_code: 200, body: body}}) do
+    Jason.decode(body)
+  end
+
+  defp handle_response({:ok, %{status_code: _, body: body}}) do
+    {:error, body}
   end
 
   defp handle_response({:error, %{reason: reason}}) do
