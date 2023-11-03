@@ -7,25 +7,29 @@ defmodule IssApi.Collector do
   @spec build() :: {:ok, Location.t()} | {:error, String.t()}
   def build do
     url()
-    |> Client.fetch
-    |> extract
-    |> _build
+    |> Client.fetch()
+    |> extract()
+    |> _build()
   end
 
   defp _build({:ok, {ts, lat, long}}) do
-    Location.new(ts, {lat, long}) 
+    Location.new(ts, {lat, long})
   end
 
   defp _build(err), do: err
 
   defp extract({:ok, res}) do
-    {:ok,
-      {
-        Map.get(res, "timestamp"),
-        get_in(res, ["iss_position", "latitude"]),
-        get_in(res, ["iss_position", "longitude"]),
-      }
-    }
+    ts = Map.get(res, "timestamp")
+
+    {lat, _} =
+      get_in(res, ["iss_position", "latitude"])
+      |> Float.parse()
+
+    {long, _} =
+      get_in(res, ["iss_position", "longitude"])
+      |> Float.parse()
+
+    {:ok, {ts, lat, long}}
   end
 
   defp extract({:error, msg}) when is_binary(msg) do
@@ -36,7 +40,7 @@ defmodule IssApi.Collector do
     {
       :error,
       "httpoison error code: #{code}"
-    } 
+    }
   end
 
   defp url do
