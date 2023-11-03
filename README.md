@@ -1,5 +1,7 @@
 # IssApi
 
+![Elixir CI](https://github.com/MikkelvtK/iss_api/actions/workflows/elixir.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/MikkelvtK/iss_api/badge.svg?branch=main)](https://coveralls.io/github/MikkelvtK/iss_api?branch=main)
+
 **TODO: Add description**
 
 ## Installation

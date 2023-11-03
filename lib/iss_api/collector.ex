@@ -21,6 +21,8 @@ defmodule IssApi.Collector do
   defp extract({:ok, res}) do
     ts = Map.get(res, "timestamp")
 
+    # The API returns the latitude and longitude values as string values
+    # So we have to parse them to floats before using them.
     {lat, _} =
       get_in(res, ["iss_position", "latitude"])
       |> Float.parse()
@@ -43,6 +45,8 @@ defmodule IssApi.Collector do
     }
   end
 
+  # We use an application env to store the endpoint to the api.
+  # Check the config.exs file to see the full endpoint.
   defp url do
     Application.get_env(:iss_api, :url)
   end
