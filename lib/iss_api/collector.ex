@@ -1,4 +1,6 @@
 defmodule IssApi.Collector do
+  @moduledoc false
+
   alias IssApi.Client
   alias IssApi.Location
 
