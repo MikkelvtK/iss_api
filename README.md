@@ -1,6 +1,7 @@
 # IssApi
 
 ![Elixir CI](https://github.com/MikkelvtK/iss_api/actions/workflows/elixir.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/MikkelvtK/iss_api/badge.svg?branch=main)](https://coveralls.io/github/MikkelvtK/iss_api?branch=main) ![Hex.pm](https://img.shields.io/hexpm/v/iss_api)
+<br>
 IssApi is a wrapper written in Elixir for [Open Notify](http://open-notify.org).
 
 Library documentation can be found on [Hex Docs](https://hexdocs.pm/iss_api)
