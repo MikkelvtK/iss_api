@@ -3,16 +3,7 @@ defmodule IssApi do
   Documentation for `IssApi`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> IssApi.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  @spec location() :: {:ok, IssApi.Location.t()} | {:error, String.t()}
+  def location do
   end
 end

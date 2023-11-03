@@ -1,7 +1,7 @@
 defmodule IssApi.Client do
   @moduledoc false
 
-  @spec fetch(String.t()) :: {:ok, map()} | {:error, atom()} | {:error, String.t()}
+  @spec fetch(String.t()) :: {:ok, map()} | {:error, atom() | String.t()}
   def fetch(url) do
     http_client().get(url)
     |> handle_response

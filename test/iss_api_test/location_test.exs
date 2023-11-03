@@ -9,8 +9,8 @@ defmodule IssApiTest.LocationTest do
       check all ts <- positive_integer(),
                 long <- float(),
                 lat <- float(),
-                loc = Location.new(ts, {long, lat}) do 
-        %Location{timestamp: new_ts, position: {new_long, new_lat}} = loc
+                {:ok, loc} = Location.new(ts, {lat, long}) do 
+        %Location{timestamp: new_ts, position: {new_lat, new_long}} = loc
         assert new_ts == ts
         assert_in_delta new_lat, lat, 0.01 
         assert_in_delta new_long, long, 0.01
