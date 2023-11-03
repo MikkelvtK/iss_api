@@ -2,7 +2,7 @@ defmodule IssApi.Collector do
   alias IssApi.Client
   alias IssApi.Location
 
-  @spec build() :: {:ok, IssApi.Location.t()} | {:error, String.t()}
+  @spec build() :: {:ok, Location.t()} | {:error, String.t()}
   def build do
     url()
     |> Client.fetch
