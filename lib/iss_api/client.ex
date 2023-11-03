@@ -20,6 +20,11 @@ defmodule IssApi.Client do
   end
 
   defp http_client do
+    httpoison = Application.get_env(:iss_api, :http_client)
+    if httpoison == nil do
+      Application.put_env(:iss_api, :http_client, HTTPoison)
+    end
+
     Application.get_env(:iss_api, :http_client)
   end
 end

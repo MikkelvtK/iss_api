@@ -48,6 +48,6 @@ defmodule IssApi.Collector do
   # We use an application env to store the endpoint to the api.
   # Check the config.exs file to see the full endpoint.
   defp url do
-    Application.get_env(:iss_api, :url)
+    "http://api.open-notify.org/iss-now.json"
   end
 end

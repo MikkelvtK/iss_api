@@ -5,12 +5,13 @@ defmodule IssApi.MixProject do
     [
       app: :iss_api,
       name: "IssApi",
-      version: "0.1.0",
+      version: "0.1.2",
       elixir: "~> 1.15",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
+      description: description(),
       source_url: "https://github.com/MikkelvtK/iss_api",
       homepage_url: "https://github.com/MikkelvtK/iss_api",
       docs: [
@@ -32,6 +33,10 @@ defmodule IssApi.MixProject do
     [
       extra_applications: [:logger],
     ]
+  end
+
+  defp description do
+    "A wrapper for the Open Notify API" 
   end
 
   defp package do
