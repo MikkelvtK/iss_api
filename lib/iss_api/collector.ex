@@ -30,7 +30,7 @@ defmodule IssApi.Collector do
     {:error, msg}
   end
 
-  defp extract({:error, code}) do
+  defp extract({:error, code}) when is_atom(code) do
     {
       :error,
       "httpoison error code: #{code}"
