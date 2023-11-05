@@ -8,7 +8,7 @@ defmodule IssApi.Client do
   end
 
   defp handle_response({:ok, %{status_code: 200, body: body}}) do
-    Jason.decode(body)
+    {:ok, body} 
   end
 
   defp handle_response({:ok, %{status_code: _, body: body}}) do

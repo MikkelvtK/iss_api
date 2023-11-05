@@ -41,6 +41,6 @@ defmodule IssApi do
   """
   @spec location() :: {:ok, IssApi.Location.t()} | {:error, String.t()}
   def location do
-    Collector.init(Parser.Location) 
+    Collector.start(Parser.LocationParser) 
   end
 end
