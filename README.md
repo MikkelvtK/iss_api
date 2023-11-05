@@ -19,7 +19,7 @@ end
 ```
 ## Usage
 
-To invoke the library function you can this code snippet:
+To invoke the library function you can use this code snippet:
 
 ```elixir
 iex> IssApi.location()

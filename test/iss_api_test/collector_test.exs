@@ -5,7 +5,7 @@ defmodule IssApiTest.CollectorTest do
 
   setup :verify_on_exit!
 
-  describe "IssApi.Collector.build/0" do
+  describe "IssApi.Collector.init/1" do
     test "should transform api response to struct" do
       expect(HTTPoison.BaseMock, :get, fn _args ->
         {
@@ -18,7 +18,7 @@ defmodule IssApiTest.CollectorTest do
         }
       end)
 
-      assert {:ok, %{timestamp: ts, position: {lat, long}}} = IssApi.Collector.build()
+      assert {:ok, %{timestamp: ts, position: {lat, long}}} = IssApi.Collector.init(IssApi.Parser.Location)
       assert ts == 1_699_013_111
       assert lat == -49.1182
       assert long == 20.8571
@@ -36,7 +36,7 @@ defmodule IssApiTest.CollectorTest do
       }
     end)
 
-    assert {:error, msg} = IssApi.Collector.build()
+    assert {:error, msg} = IssApi.Collector.init(IssApi.Parser.Location)
     assert String.equivalent?(msg, "not found")
   end
 
@@ -48,7 +48,7 @@ defmodule IssApiTest.CollectorTest do
       }
     end)
     
-    assert {:error, msg} = IssApi.Collector.build()
+    assert {:error, msg} = IssApi.Collector.init(IssApi.Parser.Location)
     assert String.equivalent?(msg, "httpoison error code: nxdomain")
   end
 end
