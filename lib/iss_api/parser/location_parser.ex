@@ -37,9 +37,4 @@ defmodule IssApi.Parser.LocationParser do
       """
     } 
   end
-
-  @impl IssApi.Parser
-  def url do
-    "http://api.open-notify.org/iss-now.json"
-  end
 end

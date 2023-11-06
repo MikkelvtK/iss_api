@@ -15,7 +15,7 @@ defmodule IssApiTest.ClientTest do
       end)
 
       {:ok, res} = IssApi.Client.fetch(@iss_location_url)
-      assert is_map(res) 
+      assert String.equivalent?(res,"{\"test\": \"some body\"}")
     end
 
     test "should return an atom when :error is received" do

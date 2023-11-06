@@ -3,6 +3,8 @@ defmodule IssApiTest.CollectorTest do
 
   import Mox
 
+  @iss_location_url "http://api.open-notify.org/iss-now.json"
+
   setup :verify_on_exit!
 
   describe "IssApi.Collector.init/1" do
@@ -18,7 +20,12 @@ defmodule IssApiTest.CollectorTest do
         }
       end)
 
-      assert {:ok, %{timestamp: ts, position: {lat, long}}} = IssApi.Collector.init(IssApi.Parser.Location)
+      assert {:ok, %{timestamp: ts, position: {lat, long}}} =
+               IssApi.Collector.start(
+                 IssApi.Parser.LocationParser,
+                 @iss_location_url
+               )
+
       assert ts == 1_699_013_111
       assert lat == -49.1182
       assert long == 20.8571
@@ -36,7 +43,7 @@ defmodule IssApiTest.CollectorTest do
       }
     end)
 
-    assert {:error, msg} = IssApi.Collector.init(IssApi.Parser.Location)
+    assert {:error, msg} = IssApi.Collector.start(IssApi.Parser.LocationParser, @iss_location_url)
     assert String.equivalent?(msg, "not found")
   end
 
@@ -47,8 +54,8 @@ defmodule IssApiTest.CollectorTest do
         %{reason: :nxdomain}
       }
     end)
-    
-    assert {:error, msg} = IssApi.Collector.init(IssApi.Parser.Location)
+
+    assert {:error, msg} = IssApi.Collector.start(IssApi.Parser.LocationParser, @iss_location_url)
     assert String.equivalent?(msg, "httpoison error code: nxdomain")
   end
 end

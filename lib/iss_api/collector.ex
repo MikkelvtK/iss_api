@@ -3,11 +3,11 @@ defmodule IssApi.Collector do
 
   alias IssApi.Client
 
-  @type mod :: atom()
+  @type parser :: atom()
 
-  @spec start(mod()) :: {:ok, IssApi.Location.t()} | {:error, String.t()}
-  def start(parser) when is_atom(parser) do
-    parser.url()
+  @spec start(parser(), String.t()) :: {:ok, IssApi.Location.t()} | {:error, String.t()}
+  def start(parser, url) when is_atom(parser) do
+    url
     |> Client.fetch()
     |> process(parser)
   end

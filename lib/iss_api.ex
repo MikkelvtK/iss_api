@@ -20,6 +20,8 @@ defmodule IssApi do
   alias IssApi.Collector
   alias IssApi.Parser
 
+  @location_url "http://api.open-notify.org/iss-now.json"
+
   @doc """
   This will return the current location of the International Space Station.
 
@@ -41,6 +43,6 @@ defmodule IssApi do
   """
   @spec location() :: {:ok, IssApi.Location.t()} | {:error, String.t()}
   def location do
-    Collector.start(Parser.LocationParser) 
+    Collector.start(Parser.LocationParser, @location_url)
   end
 end
