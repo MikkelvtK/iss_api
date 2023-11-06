@@ -1,40 +1,31 @@
 defmodule IssApi.Parser.LocationParser do
-  alias IssApi.Location
+  use IssApi.Parser
 
-  @behaviour IssApi.Parser
+  alias IssApi.Location
 
   @type json :: String.t()
 
   @impl IssApi.Parser
   @spec parse(json()) :: {:ok, IssApi.Location.t()} | {:error, String.t()}
   def parse(json) when is_binary(json) do
-    {:ok, data} = Jason.decode(json)
+    case Jason.decode(json) do
+      {:ok, data} ->
+        ts = get_in(data, ["timestamp"])
 
-    ts = get_in(data, ["timestamp"])
+        {lat, _} =
+          get_in(data, ["iss_position", "latitude"])
+          |> Float.parse()
 
-    {lat, _} =
-      get_in(data, ["iss_position", "latitude"])
-      |> Float.parse()
+        {long, _} =
+          get_in(data, ["iss_position", "longitude"])
+          |> Float.parse()
 
-    {long, _} =
-      get_in(data, ["iss_position", "longitude"])
-      |> Float.parse()
+        Location.new(ts, lat, long)
 
-    Location.new(ts, lat, long)
+      {:error, _} ->
+        error(json)
+    end
   end
 
-  def parse(data) do
-    {
-      :error,
-      """
-      invalid argument.
-
-      expected:
-        data :: map()
-
-      got:
-        # 1 #{data}
-      """
-    } 
-  end
+  def parse(json), do: error(json)
 end

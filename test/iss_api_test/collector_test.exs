@@ -7,7 +7,7 @@ defmodule IssApiTest.CollectorTest do
 
   setup :verify_on_exit!
 
-  describe "IssApi.Collector.init/1" do
+  describe "IssApi.Collector.start/2" do
     test "should transform api response to struct" do
       expect(HTTPoison.BaseMock, :get, fn _args ->
         {

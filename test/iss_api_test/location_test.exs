@@ -20,5 +20,14 @@ defmodule IssApiTest.LocationTest do
       {err, _} = Location.new("not a number", 42, [])
       assert err == :error
     end
+
+    property "should generate errors when given bad input" do
+      check all bad_ts <- term(),
+                bad_lat <- term(),
+                bad_long <- term(),
+                max_runs: 20 do
+        assert {:error, _} = Location.new(bad_ts, bad_lat, bad_long) 
+      end
+    end
   end
 end

@@ -3,6 +3,8 @@ defmodule IssApi.Location do
   Contains all logic that involves the location of the ISS.
   """
 
+  require Logger
+
   @type timestamp :: non_neg_integer()
   @type longitude :: float()
   @type latitude :: float()
@@ -14,7 +16,6 @@ defmodule IssApi.Location do
   @enforce_keys [:timestamp, :position]
   defstruct [:timestamp, :position]
 
-  @doc false
   @spec new(non_neg_integer(), latitude(), longitude()) ::
           {:ok, __MODULE__.t()} | {:error, String.t()}
   def new(ts, lat, long)
@@ -32,21 +33,10 @@ defmodule IssApi.Location do
   end
 
   def new(ts, lat, long) do
+    Logger.error("invalid arguments given: #{inspect {ts, lat, long}}")
     {
       :error,
-      """
-      invalid arguments.
-
-      expected: 
-        timestamp :: non_neg_integer()
-        latitude :: float()
-        longitude :: float()
-
-      got:
-        # 1 #{ts}
-        # 2 #{lat}
-        # 3 #{long} 
-      """
+      "invalid arguments given to function: #{__MODULE__}.new/3"
     }
   end
 end
