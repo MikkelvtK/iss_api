@@ -43,8 +43,7 @@ defmodule IssApiTest.CollectorTest do
       }
     end)
 
-    assert {:error, msg} = IssApi.Collector.start(IssApi.Parser.LocationParser, @iss_location_url)
-    assert String.equivalent?(msg, "not found")
+    assert {:error, {:open_notify_error, _}} = IssApi.Collector.start(IssApi.Parser.LocationParser, @iss_location_url)
   end
 
   test "should return httpoison error code when invalid" do
@@ -55,7 +54,6 @@ defmodule IssApiTest.CollectorTest do
       }
     end)
 
-    assert {:error, msg} = IssApi.Collector.start(IssApi.Parser.LocationParser, @iss_location_url)
-    assert String.equivalent?(msg, "httpoison error code: nxdomain")
+    assert {:error, {:httpoison_error, _}} = IssApi.Collector.start(IssApi.Parser.LocationParser, @iss_location_url)
   end
 end

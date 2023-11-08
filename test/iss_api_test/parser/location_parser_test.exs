@@ -10,7 +10,7 @@ defmodule IssApiTest.Parser.LocationParserTest do
                 lat <- float(),
                 long <- float(),
                 json = build_correct_json(ts, lat, long) do
-        assert {:ok, %IssApi.Location{}} = LocationParser.parse(json) 
+        assert {:ok, %{}} = LocationParser.parse(json) 
       end  
     end
 

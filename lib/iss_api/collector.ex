@@ -17,14 +17,5 @@ defmodule IssApi.Collector do
     |> parser.parse()
   end
 
-  defp process({:error, msg}, _parser) when is_binary(msg) do
-    {:error, msg}
-  end
-
-  defp process({:error, code}, _parser) when is_atom(code) do
-    {
-      :error,
-      "httpoison error code: #{code}"
-    }
-  end
+  defp process(error, _parser), do: error
 end

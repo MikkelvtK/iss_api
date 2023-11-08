@@ -36,8 +36,7 @@ defmodule IssApiTest do
         }
       end)
 
-      assert {:error, msg} = IssApi.location()
-      assert String.equivalent?(msg, "not found")
+      assert {:error, {:open_notify_error, _}} = IssApi.location()
     end
   end
 end

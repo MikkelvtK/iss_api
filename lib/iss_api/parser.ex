@@ -1,25 +1,31 @@
 defmodule IssApi.Parser do
-  require Logger
   @type json :: String.t()
+  @type data :: map()
+  @type paths :: list(list(any()))
 
-  @callback parse(json()) :: {:ok, term()} | {:error, String.t()}
-  @callback error(any()) :: {:error, String.t()}
+  @callback parse(json()) :: {:ok, map()} | {:error, {atom(), term()}}
 
   defmacro __using__(_opts) do
     quote do
-      require Logger 
-
       @behaviour IssApi.Parser
 
-      def error(input) do
-        Logger.error("invalid arguments given: #{inspect input}")
-        {
-          :error,
-          "invalid arguments given to function: #{__MODULE__}"
-        }
-      end
-
-      defoverridable error: 1
+      import IssApi.Parser, only: [decode_json: 1, extract_values: 2]
     end
+  end
+
+  @spec decode_json(json) :: {:ok, map()} | {:error, {atom(), json}}
+  def decode_json(json) do
+    case Jason.decode(json) do
+      {:ok, data} -> {:ok, data}
+      {:error, _} -> {:error, {:invalid_json, json}}
+    end
+  end
+
+  @spec extract_values(data, paths) :: list(any()) 
+  def extract_values(data, paths) do
+    Enum.reduce(paths, [], fn path, acc ->
+      [get_in(data, path) | acc]
+    end)
+    |> Enum.reverse()
   end
 end

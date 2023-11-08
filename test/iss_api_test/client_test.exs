@@ -24,8 +24,7 @@ defmodule IssApiTest.ClientTest do
         {:error, %{reason: :some_error}} 
       end)
 
-      {:error, res} = IssApi.Client.fetch(@iss_location_url)
-      assert is_atom(res) 
+      assert {:error, {:httpoison_error, :some_error}} = IssApi.Client.fetch(@iss_location_url)
     end
 
     test "should return a string when no 200 is received" do
@@ -34,8 +33,7 @@ defmodule IssApiTest.ClientTest do
         {:ok, %{status_code: 404, body: "not found"}} 
       end)
 
-      {:error, res} = IssApi.Client.fetch(@iss_location_url)
-      assert is_binary(res) 
+      assert {:error, {:open_notify_error, _}} = IssApi.Client.fetch(@iss_location_url)
     end
   end
 end

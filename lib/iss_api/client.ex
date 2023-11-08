@@ -1,7 +1,7 @@
 defmodule IssApi.Client do
   @moduledoc false
 
-  @spec fetch(String.t()) :: {:ok, map()} | {:error, atom() | String.t()}
+  @spec fetch(String.t()) :: {:ok, map()} | {:error, {atom(), term()}} 
   def fetch(url) do
     http_client().get(url)
     |> handle_response
@@ -12,11 +12,11 @@ defmodule IssApi.Client do
   end
 
   defp handle_response({:ok, %{status_code: _, body: body}}) do
-    {:error, body}
+    {:error, {:open_notify_error, body}}
   end
 
   defp handle_response({:error, %{reason: reason}}) do
-    {:error, reason}
+    {:error, {:httpoison_error, reason}}
   end
 
   defp http_client do
