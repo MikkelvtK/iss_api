@@ -9,7 +9,7 @@ defmodule IssApi.Parser do
     quote do
       @behaviour IssApi.Parser
 
-      import IssApi.Parser, only: [decode_json: 1, extract_values: 2]
+      import IssApi.Parser, only: [decode_json: 1]
     end
   end
 
@@ -19,13 +19,5 @@ defmodule IssApi.Parser do
       {:ok, data} -> {:ok, data}
       {:error, _} -> {:error, {:invalid_json, json}}
     end
-  end
-
-  @spec extract_values(data, paths) :: list(any()) 
-  def extract_values(data, paths) do
-    Enum.reduce(paths, [], fn path, acc ->
-      [get_in(data, path) | acc]
-    end)
-    |> Enum.reverse()
   end
 end

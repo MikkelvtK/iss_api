@@ -14,7 +14,7 @@ defmodule IssApiTest.ClientTest do
         {:ok, %{status_code: 200, body: "{\"test\": \"some body\"}"}}
       end)
 
-      {:ok, res} = IssApi.Client.fetch(@iss_location_url)
+      assert {:ok, res} = IssApi.Client.fetch(@iss_location_url)
       assert String.equivalent?(res,"{\"test\": \"some body\"}")
     end
 
