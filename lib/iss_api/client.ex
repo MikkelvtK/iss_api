@@ -1,14 +1,15 @@
 defmodule IssApi.Client do
   @moduledoc false
 
-  @spec fetch(String.t()) :: {:ok, map()} | {:error, {atom(), term()}} 
+  @spec fetch(IssApi.Collector.url()) ::
+          {:ok, IssApi.Parser.json()} | {:error, IssApi.error()}
   def fetch(url) do
     http_client().get(url)
     |> handle_response
   end
 
   defp handle_response({:ok, %{status_code: 200, body: body}}) do
-    {:ok, body} 
+    {:ok, body}
   end
 
   defp handle_response({:ok, %{status_code: _, body: body}}) do
@@ -21,6 +22,7 @@ defmodule IssApi.Client do
 
   defp http_client do
     httpoison = Application.get_env(:iss_api, :http_client)
+
     if httpoison == nil do
       Application.put_env(:iss_api, :http_client, HTTPoison)
     end

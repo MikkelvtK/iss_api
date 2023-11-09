@@ -20,6 +20,12 @@ defmodule IssApi do
   alias IssApi.Collector
   alias IssApi.Parser
 
+  @type error :: {atom(), term()}
+  @type unix_epoch :: integer()
+  @type latitude :: float()
+  @type longitude :: float()
+  @type iss_location :: %{timestamp: unix_epoch(), position: {latitude(), longitude()}}
+
   @location_url "http://api.open-notify.org/iss-now.json"
 
   @doc """

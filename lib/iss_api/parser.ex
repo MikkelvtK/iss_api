@@ -1,7 +1,6 @@
 defmodule IssApi.Parser do
   @type json :: String.t()
   @type data :: map()
-  @type paths :: list(list(any()))
 
   @callback parse(json()) :: {:ok, map()} | {:error, {atom(), term()}}
 
@@ -13,7 +12,7 @@ defmodule IssApi.Parser do
     end
   end
 
-  @spec decode_json(json) :: {:ok, map()} | {:error, {atom(), json}}
+  @spec decode_json(json()) :: {:ok, data()} | {:error, IssApi.error()} 
   def decode_json(json) do
     case Jason.decode(json) do
       {:ok, data} -> {:ok, data}

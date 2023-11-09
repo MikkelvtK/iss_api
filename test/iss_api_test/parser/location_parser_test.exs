@@ -4,12 +4,12 @@ defmodule IssApiTest.Parser.LocationParserTest do
 
   alias IssApi.Parser.LocationParser
 
-  describe "IssApi.Parser.LocationParser/1" do
-    property "giving correct json returns IssApi.Location struct" do
+  describe "IssApi.Parser.LocationParser.parse/1" do
+    property "giving correct json returns map" do
       check all ts <- positive_integer(),
                 lat <- float(),
                 long <- float(),
-                json = build_correct_json(ts, lat, long) do
+                json = build_correct_json(ts, to_string(lat), to_string(long)) do
         assert {:ok, %{}} = LocationParser.parse(json) 
       end  
     end
@@ -28,12 +28,21 @@ defmodule IssApiTest.Parser.LocationParserTest do
       end
     end
 
-    property "bad floats gives :invalid_float error" do
+    property "bad lat and long values give :invalid_float error" do
       check all ts <- positive_integer(),
                 lat <- string([?a..?z, ?A..?Z]),
                 long <- string([?a..?z, ?A..?Z]),
                 json = build_correct_json(ts, lat, long) do
         assert {:error, {:invalid_float, _}} = LocationParser.parse(json)
+      end
+    end
+
+    property "unexpected lat and long values give :unexpected_float error" do
+      check all ts <- positive_integer(),
+                lat <- one_of([boolean(), integer(), float()]),
+                long <- one_of([boolean(), integer(), float()]),
+                json = build_json_with_incorrect_lat_long_value_types(ts, lat, long) do
+        assert {:error, {:unexpected_float, _}} = LocationParser.parse(json)
       end
     end
 
@@ -52,13 +61,30 @@ defmodule IssApiTest.Parser.LocationParserTest do
                 lat <- float(),
                 long <- float(),
                 json = build_correct_json(ts, lat, long) do
-        assert {:ok, %{timestamp: new_ts, position: {new_lat, new_long}}} = LocationParser.parse(json)
+        {:ok, %{timestamp: new_ts, position: {new_lat, new_long}}} = LocationParser.parse(json)
         assert new_ts == ts && new_lat == lat && new_long == long
+      end
+    end
+
+    property "missing keys return errors" do
+      check all ts <- string(:ascii),
+                lat <- string(:ascii), 
+                long <- string(:ascii), 
+                json = build_incorrect_json(ts, lat, long) do
+        assert {:error, _} = LocationParser.parse(json)
       end
     end
   end
 
   defp build_correct_json(ts, lat, long) do
     "{\"message\": \"success\", \"iss_position\": {\"latitude\": \"#{lat}\", \"longitude\": \"#{long}\"}, \"timestamp\": #{ts}}"
+  end
+
+  defp build_json_with_incorrect_lat_long_value_types(ts, lat, long) do
+    "{\"message\": \"success\", \"iss_position\": {\"latitude\": #{lat}, \"longitude\": #{long}}, \"timestamp\": #{ts}}"
+  end
+
+  defp build_incorrect_json(ts, lat, long) do
+    "{\"message\": \"success\", \"iss_position\": {\"#{lat}\": \"1.0\", \"#{long}\": \"1.0\"}, \"#{ts}\": 1}"
   end
 end
