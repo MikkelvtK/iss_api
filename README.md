@@ -54,7 +54,7 @@ To use the library add the `IssApi` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:iss_api, "~> 0.1.2"}
+    {:iss_api, "~> 0.2.0"}
   ]
 end
 ```
