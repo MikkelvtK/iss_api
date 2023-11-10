@@ -1,4 +1,6 @@
 defmodule IssApi.Parser do
+  @moduledoc false
+
   @type json :: String.t()
   @type data :: map()
 

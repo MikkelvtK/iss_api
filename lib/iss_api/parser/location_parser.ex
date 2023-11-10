@@ -1,4 +1,6 @@
 defmodule IssApi.Parser.LocationParser do
+  @moduledoc false
+
   use IssApi.Parser
 
   @impl IssApi.Parser

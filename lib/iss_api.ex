@@ -20,7 +20,7 @@ defmodule IssApi do
   alias IssApi.Collector
   alias IssApi.Parser
 
-  @type error :: {atom(), term()}
+  @type error :: {atom(), {atom(), term()}}
   @type unix_epoch :: integer()
   @type latitude :: float()
   @type longitude :: float()
@@ -32,10 +32,16 @@ defmodule IssApi do
   This will return the current location of the International Space Station.
 
   The function will return a tuple. The first value is an atom and will be either 
-  `:ok` or `:error`. The second value will be the `IssApi.Location` struct or 
-  an error message in the case of an error.
+  `:ok` or `:error`. The second value will be a map with the following structure: 
 
-  The `IssApi.Location` has two fields and three values in total. The first field
+  ```
+  @type iss_location :: %{timestamp: unix_epoch(), position: {latitude(), longitude()}}
+  ```
+
+  When an `:error` is returned, it will have another tuple as the second element. The tuple
+  will contain an error code and the value that caused the error.
+
+  The response has two fields and three values in total. The first field
   is the `timestamp` field. This will return the time in UNIX format. Meaning 
   it will return the amount of seconds that have passed since 1 January 1970.
   The second field is the `position` field. This is a tuple containing to floats,
@@ -44,10 +50,10 @@ defmodule IssApi do
   ## Examples
 
       IssApi.location()
-      {:ok, %IssApi.Location{timestamp: 1699027915, position: {35.9648, -143.0953}}}
+      {:ok, %{timestamp: 1699027915, position: {35.9648, -143.0953}}}
 
   """
-  @spec location() :: {:ok, IssApi.Location.t()} | {:error, String.t()}
+  @spec location() :: {:ok, iss_location()} | error() 
   def location do
     Collector.start(Parser.LocationParser, @location_url)
   end

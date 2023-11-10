@@ -5,7 +5,7 @@ defmodule IssApi.MixProject do
     [
       app: :iss_api,
       name: "IssApi",
-      version: "0.1.2",
+      version: "0.2.0",
       elixir: "~> 1.15",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
