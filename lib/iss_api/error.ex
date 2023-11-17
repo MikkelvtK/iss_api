@@ -9,5 +9,6 @@ defmodule IssApi.Error do
 
   defp format({code, val}) do
     msg = code |> Atom.to_string() |> String.replace("_", " ")
-    "received #{msg}: #{inspect(val)}" end
+    "received #{msg}: #{inspect(val)}"
+  end
 end

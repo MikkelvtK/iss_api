@@ -27,7 +27,7 @@ defmodule IssApi.Parser.PeopleInSpaceParser do
     end
   end
 
-  defp parse_people(data) do
+  defp parse_people(data) when is_list(data) do
     people =
       for person <- data do
         with {:ok, name} <- Map.fetch(person, "name"),
@@ -44,6 +44,8 @@ defmodule IssApi.Parser.PeopleInSpaceParser do
         {:ok, people}
     end
   end
+
+  defp parse_people(data), do: {:error, {:invalid_people, data}}
 
   defp parse_number(val) when is_integer(val), do: {:ok, val}
   defp parse_number(val), do: {:error, {:invalid_number, val}}

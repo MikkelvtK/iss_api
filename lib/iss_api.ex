@@ -81,6 +81,7 @@ defmodule IssApi do
     end
   end
 
+  @spec people_in_space() :: {:ok, IssApi.PeopleInSpace.t()} | error()
   def people_in_space do
     Collector.start(Parser.PeopleInSpaceParser, @people_in_space_url)
   end
