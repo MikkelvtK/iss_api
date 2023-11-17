@@ -17,7 +17,7 @@ defmodule IssApi.Parser.LocationParser do
     end
   end
 
-  def parse(json), do: {:error, {:invalid_argument, json}}
+  def parse(json), do: {:error, {:invalid_json, json}}
 
   defp extract_values(data) do
     with {:ok, ts} <-

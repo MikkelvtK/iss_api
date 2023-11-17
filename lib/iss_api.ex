@@ -64,6 +64,29 @@ defmodule IssApi do
     Collector.start(Parser.LocationParser, @location_url)
   end
 
+  @doc """
+  The unsafe version of `location` function.
+
+  This function will just return the response and raise an error when an error is received.
+  It is not recommended to use this version, but it might be nice for testing purposes.
+
+  ## Examples
+
+      IssApi.location!()
+      %IssApi.Location{
+        timestamp: 1699027915,
+        possition: %{latitude: 35.9648, longitude: -143.0953}
+      }
+
+  """
+  @spec location!() :: t()
+  def location! do
+    case Collector.start(Parser.LocationParser, @location_url) do
+      {:ok, result}   -> result
+      {:error, error} -> raise IssApi.Error, error
+    end
+  end
+
   defmodule Location do
     defstruct [:timestamp, :position]
   end
