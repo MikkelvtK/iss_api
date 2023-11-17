@@ -6,7 +6,7 @@ defmodule IssApi.Collector do
   @type parser :: atom()
   @type url :: String.t()
 
-  @spec start(parser(), url()) :: {:ok, IssApi.iss_location()} | {:error, IssApi.error()}
+  @spec start(parser(), url()) :: {:ok, IssApi.t()} | {:error, IssApi.error()}
   def start(parser, url) when is_atom(parser) do
     url
     |> Client.fetch()

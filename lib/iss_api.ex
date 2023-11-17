@@ -24,7 +24,10 @@ defmodule IssApi do
   @type unix_epoch :: integer()
   @type latitude :: float()
   @type longitude :: float()
-  @type iss_location :: %{timestamp: unix_epoch(), position: {latitude(), longitude()}}
+  @type t :: %IssApi.Location{
+    timestamp: unix_epoch(), 
+    position: %{latitude: latitude(), longitude: longitude()}
+  }
 
   @location_url "http://api.open-notify.org/iss-now.json"
 
@@ -50,11 +53,18 @@ defmodule IssApi do
   ## Examples
 
       IssApi.location()
-      {:ok, %{timestamp: 1699027915, position: {35.9648, -143.0953}}}
+      {:ok, %IssApi.Location{
+        timestamp: 1699027915, 
+        position: %{latitude: 35.9648, longitude: -143.0953}
+      }}
 
   """
-  @spec location() :: {:ok, iss_location()} | error() 
+  @spec location() :: {:ok, t()} | error() 
   def location do
     Collector.start(Parser.LocationParser, @location_url)
+  end
+
+  defmodule Location do
+    defstruct [:timestamp, :position]
   end
 end

@@ -2,14 +2,18 @@ defmodule IssApi.Parser.LocationParser do
   @moduledoc false
 
   use IssApi.Parser
+  alias IssApi.Location
 
   @impl IssApi.Parser
   @spec parse(IssApi.Parser.json()) ::
-          {:ok, IssApi.iss_location()} | {:error, IssApi.error()}
+          {:ok, IssApi.t()} | {:error, IssApi.error()}
   def parse(json) when is_binary(json) do
     with {:ok, data}            <- decode_json(json),
          {:ok, {ts, lat, long}} <- extract_values(data) do
-      {:ok, Map.new(timestamp: ts, position: {lat, long})}
+      {:ok, %Location{
+        timestamp: ts,
+        position: %{latitude: lat, longitude: long}
+      }}
     end
   end
 

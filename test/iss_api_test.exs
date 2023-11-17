@@ -19,7 +19,7 @@ defmodule IssApiTest do
         }
       end)
 
-      assert {:ok, %{timestamp: ts, position: {lat, long}}} = IssApi.location()
+      assert {:ok, %{timestamp: ts, position: %{latitude: lat, longitude: long}}} = IssApi.location()
       assert ts == 1
       assert lat == -1.0
       assert long == 2.1

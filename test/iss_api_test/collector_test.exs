@@ -20,7 +20,7 @@ defmodule IssApiTest.CollectorTest do
         }
       end)
 
-      assert {:ok, %{timestamp: ts, position: {lat, long}}} =
+      assert {:ok, %{timestamp: ts, position: %{latitude: lat, longitude: long}}} =
                IssApi.Collector.start(
                  IssApi.Parser.LocationParser,
                  @iss_location_url
