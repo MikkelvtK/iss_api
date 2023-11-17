@@ -4,7 +4,7 @@ defmodule IssApi.Parser do
   @type json :: String.t()
   @type data :: map()
 
-  @callback parse(json()) :: {:ok, map()} | {:error, {atom(), term()}}
+  @callback parse(json()) :: {:ok, struct()} | {:error, {atom(), term()}}
 
   defmacro __using__(_opts) do
     quote do

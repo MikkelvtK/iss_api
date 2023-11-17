@@ -18,7 +18,7 @@ defmodule IssApiTest.Parser.LocationParserTest do
       check all bad_input <- term(),
                 not is_binary(bad_input),
                 max_runs: 20 do
-        assert {:error, {:invalid_argument, _}} = LocationParser.parse(bad_input)
+        assert {:error, {:invalid_json, _}} = LocationParser.parse(bad_input)
       end
     end
 

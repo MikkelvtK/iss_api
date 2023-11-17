@@ -21,15 +21,9 @@ defmodule IssApi do
   alias IssApi.Parser
 
   @type error :: {atom(), {atom(), term()}}
-  @type unix_epoch :: integer()
-  @type latitude :: float()
-  @type longitude :: float()
-  @type t :: %IssApi.Location{
-    timestamp: unix_epoch(), 
-    position: %{latitude: latitude(), longitude: longitude()}
-  }
 
   @location_url "http://api.open-notify.org/iss-now.json"
+  @people_in_space_url "http://api.open-notify.org/astros.json"
 
   @doc """
   This will return the current location of the International Space Station.
@@ -59,13 +53,13 @@ defmodule IssApi do
       }}
 
   """
-  @spec location() :: {:ok, t()} | error() 
+  @spec location() :: {:ok, IssApi.Location.t()} | error() 
   def location do
     Collector.start(Parser.LocationParser, @location_url)
   end
 
   @doc """
-  The unsafe version of `location` function.
+  The unsafe version of the `location` function.
 
   This function will just return the response and raise an error when an error is received.
   It is not recommended to use this version, but it might be nice for testing purposes.
@@ -79,7 +73,7 @@ defmodule IssApi do
       }
 
   """
-  @spec location!() :: t()
+  @spec location!() :: IssApi.Location.t()
   def location! do
     case Collector.start(Parser.LocationParser, @location_url) do
       {:ok, result}   -> result
@@ -87,7 +81,45 @@ defmodule IssApi do
     end
   end
 
+  def people_in_space do
+    Collector.start(Parser.PeopleInSpaceParser, @people_in_space_url)
+  end
+
+  def people_in_space! do
+    case Collector.start(Parser.PeopleInSpaceParser, @people_in_space_url) do
+      {:ok, result}   -> result
+      {:error, error} -> raise IssApi.Error, error
+    end
+  end
+
   defmodule Location do
+    @moduledoc """
+    This defines the data structure of the current location of the ISS.
+    """
+
+    @type unix_epoch :: integer()
+    @type latitude :: float()
+    @type longitude :: float()
+    @type t :: %IssApi.Location{
+      timestamp: unix_epoch(), 
+      position: %{latitude: latitude(), longitude: longitude()}
+    }
+
     defstruct [:timestamp, :position]
+  end
+
+  defmodule PeopleInSpace do
+    @moduledoc """
+    This defines the data structure of the people in space.
+    """
+
+    @type name :: String.t()
+    @type craft :: String.t()
+    @type t :: %IssApi.PeopleInSpace{
+      number: non_neg_integer(),
+      people: [%{name: name(), craft: craft()}]
+    } 
+
+    defstruct [:number, :people]
   end
 end
